@@ -91,6 +91,10 @@ export default defineNuxtConfig({
   // `.nojekyll` marker that stops Pages from dropping `_nuxt/`.
   nitro: {
     preset: 'github_pages',
+    // No page links to the JSON feed, so the crawler would never find it.
+    prerender: {
+      routes: ['/blog-json'],
+    },
   },
 
   hooks: {
