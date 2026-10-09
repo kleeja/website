@@ -6,9 +6,13 @@ definePageMeta({
 const { t, locale } = useI18n()
 const { collection, formatDate } = useBlog()
 
-useSeoMeta({
+useSeo({
   title: () => t('blog.seo.title'),
   description: () => t('blog.seo.description'),
+  type: 'website',
+})
+
+useSeoMeta({
   ogTitle: () => t('blog.seo.ogTitle'),
   ogDescription: () => t('blog.seo.description'),
 })

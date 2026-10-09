@@ -18,9 +18,13 @@ definePageMeta({
 
 const { t, locale } = useI18n()
 
-useSeoMeta({
+useSeo({
   title: () => t('contributors.seo.title'),
   description: () => t('contributors.seo.description'),
+  type: 'website',
+})
+
+useSeoMeta({
   ogTitle: () => t('contributors.seo.ogTitle'),
   ogDescription: () => t('contributors.seo.description'),
 })
