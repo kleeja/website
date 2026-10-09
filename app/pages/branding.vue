@@ -15,9 +15,13 @@ definePageMeta({
 
 const { t } = useI18n()
 
-useSeoMeta({
+useSeo({
   title: () => t('branding.seo.title'),
   description: () => t('branding.seo.description'),
+  type: 'website',
+})
+
+useSeoMeta({
   ogTitle: () => t('branding.seo.ogTitle'),
   ogDescription: () => t('branding.seo.description'),
 })

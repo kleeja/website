@@ -32,9 +32,13 @@ definePageMeta({
 const { t, te, locale } = useI18n()
 const localePath = useLocalePath()
 
-useSeoMeta({
+useSeo({
   title: () => t('store.seo.title'),
   description: () => t('store.seo.description'),
+  type: 'website',
+})
+
+useSeoMeta({
   ogTitle: () => t('store.seo.ogTitle'),
   ogDescription: () => t('store.seo.description'),
 })
