@@ -10,10 +10,10 @@ image: /images/blog/kleeja-4.png
 
 Kleeja 4 is the biggest release we have shipped in years. We rebuilt the control panel from scratch, redesigned the Bootstrap style to make it the default, rewrote the template engine and the updater, and cleaned the database of columns Kleeja no longer reads.
 
-Some of these changes break compatibility with plugins and styles written for Kleeja 3. This post has three parts: what's new in Kleeja 4, what may break after you upgrade, and how to upgrade safely. If your site runs Kleeja 3, read the last two parts before you start.
+Some of these changes break compatibility with plugins and styles written for Kleeja 3. This post has four parts: what's new in Kleeja 4, the plugins available for it, what may break after you upgrade, and how to upgrade safely. If your site runs Kleeja 3, read the last two parts before you start.
 
 ::note
-**Kleeja 4 requirements:** PHP 8.2 or newer, and the PDO extension with the MySQL/MariaDB or SQLite driver. The updater and the plugin and style store also need the ZipArchive extension.
+**Kleeja 4 requirements:** PHP 8.2 or newer, and the PDO extension with the MySQL/MariaDB driver, or with SQLite 3.35 or newer. The updater and the plugin and style store also need the ZipArchive extension.
 ::
 
 ## What's new in Kleeja 4
@@ -61,6 +61,7 @@ An upgrade that fails halfway is worse than no upgrade, so we rewrote the update
 - Deletes files of the old version that are no longer part of Kleeja, such as the folder of a replaced control panel theme.
 - Closes the site for maintenance during the upgrade, then puts it back the way it was, so it never opens a site you had closed yourself.
 - Stops at the first failed database update, shows you the error, and continues from there on the next try.
+- If an update stops after it copies the files but before it finishes the database, founders see a notice on the dashboard with an "Update the database" button that finishes the job.
 - Reminds you to update your plugins and styles after the upgrade, with two buttons that take you to their pages.
 
 ### A store for Kleeja 4
@@ -109,6 +110,45 @@ Kleeja 4 is the first release after 3.2.7, so it also includes the work we did s
 
 We dropped database columns that Kleeja no longer reads: the old visit counters in the `stats` table, the `session_id` column in the users table, and five columns in the plugins table. We also deleted old files that nothing uses anymore, and dropped Internet Explorer support in the control panel.
 
+## Plugins for Kleeja 4
+
+Every official plugin has its own repository [on GitHub](https://github.com/kleeja) with its own releases, and the store installs the release that the Kleeja 4 catalog lists for it. We released new versions of the official plugins for Kleeja 4, and every one of them:
+
+- Works with Kleeja 4, PHP 8.2 and the new database layer.
+- Has settings pages redesigned for Damask, split into tabs.
+- Has a full guide on the Help page, in Arabic and English.
+- Has an icon that shows in the store and on the Help page.
+
+### Two new plugins
+
+- **Kleeja SMTP Mailer** (`kj_smtp_mailer`) 1.4 sends all of Kleeja's mail through your own SMTP server instead of the PHP mail function, so password recovery messages and your replies stay out of spam folders. It fills in the settings of Hostinger or Gmail in one click, and its test tab checks your settings, sends a test message and shows the reason when the server refuses it. It sends the messages in Kleeja's new email design, and sets the visitor's address as the reply address of message and report alerts.
+- **Kleeja Advanced Stats** (`kleeja_advanced_stats`) 1.3 reports what happened on your service between two dates: uploads, storage, downloads, messages, reports and new users, compared with the period before, with charts. It shows the most downloaded, largest and most reported files, when people upload by hour and by day, and saves the report as a PDF in your browser. Other plugins can add their own stats in a tab of their own, as Kleeja Payment does.
+
+### Plugins with new features
+
+- **PDF Viewer** (`pdf_viewer`) 2.0 has a new viewer built on Mozilla's PDF.js, replacing the old one. It has a toolbar to move through pages and zoom, full screen and a presentation mode, and visitors can select and copy the text. It opens large files fast because it reads the pages it shows first, and it follows the page language and dark mode.
+- **Video & Audio Player** (`video_player`) 2.1 moves to the latest Video.js. It has playback speed, picture-in-picture and keyboard shortcuts, double tap on touch screens to skip back or ahead, and a compact bar for audio files. The video box takes the shape of the video, so a portrait phone video isn't drawn small.
+- **Kleeja Multi-FTP Uploading** (`kj_ftp`) 2.0 adds a "Connection test" tab that checks an FTP account from end to end: the host, the port, FTPS, the sign-in, the root folder, uploading and deleting a file, and the public link. It names the setting that is wrong. Each account supports FTPS and passive mode, and the video player and PDF viewer play files stored on FTP servers.
+- **Kleeja Payment** (`kleeja_payment`) 2.0.4 shows the payment options as cards, sends clearer emails to buyers, adds its payment stats to Kleeja Advanced Stats, and supports the `og_default` style. The PayPal and Stripe libraries come inside the release package that the store installs.
+- **KJ Comment** (`kj_comment`) 1.1.4 deletes the comments of a file along with the file, whether you delete it from the control panel, its uploader deletes it, or it is removed by its deletion link or by the cleanup of old files.
+
+### The other plugins
+
+We ported these plugins to Kleeja 4 with the shared improvements above:
+
+| Plugin                                              | Version | What it does                                                                                                               |
+| --------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| KJ reCaptcha (`kj_recaptcha`)                       | 2.0     | Replaces the security code with Google reCAPTCHA (v2 checkbox, invisible badge or v3) and protects the control panel login |
+| Kleeja X SendFile (`kj_x_sendfile`)                 | 1.1     | Hands file transfers to Apache or Nginx, so a long download doesn't keep a PHP process busy                                |
+| Advanced Watermark (`advanced_watermark`)           | 1.2     | Stamps images with your logo or a line of text, with a preview before your visitors upload anything                        |
+| Kleeja Admin Firewall (`kj_ban_admin`)              | 1.1     | Bans an IP address after 10 wrong passwords at the control panel sign-in                                                   |
+| KJ Download Speed Limit (`kj_download_speed_limit`) | 1.2     | Sets the download speed of each group                                                                                      |
+| Meta SEO (`kj_meta_seo`)                            | 1.2.0   | Adds a description, keywords, Open Graph and X Card tags to every page                                                     |
+| KJ AMP SEO (`kj_amp_seo`)                           | 1.2.0   | Gives every download page a fast AMP version, with share buttons and AdSense ads                                           |
+| KJ SiteMap SEO (`kj_sitemap_seo`)                   | 2.0.0   | Publishes an XML sitemap of the 100 latest files and images                                                                |
+| Language Switch (`language_switch`)                 | 2.0     | Adds a language menu to the top of every page, next to the color mode menu in the Bootstrap style                          |
+| Advanced Extras (`advanced_extras`)                 | 1.1     | Gives each page its own extra header and footer                                                                            |
+
 ## Breaking changes
 
 ### For site owners
@@ -125,7 +165,7 @@ The updater in Kleeja 3 only checks for PHP 8, so it can offer you the upgrade t
 
 The Kleeja 4 database update disables every installed plugin. Kleeja 3 plugins weren't written for this release, and running them without an update can bring down the whole site. Their data and settings stay in the database, and you enable each plugin again after you update it.
 
-Most store plugins have a Kleeja 4 version, such as `kj_ftp`, `kj_smtp_mailer`, `kj_recaptcha`, `video_player`, `pdf_viewer` and `kleeja_payment`. At the time of writing, these plugins don't have one yet: `menu_toggle`, `rebrandly`, `vbulletin_integration`, `phpbb_integration`, `thumbs_generator` and `kjp_account_charger`. If your site depends on one of them, wait before you upgrade.
+Most store plugins have a Kleeja 4 version, listed in the "Plugins for Kleeja 4" section above. At the time of writing, these plugins don't have one yet: `menu_toggle`, `rebrandly`, `vbulletin_integration`, `phpbb_integration`, `thumbs_generator` and `kjp_account_charger`. If your site depends on one of them, wait before you upgrade.
 
 #### The Default style has left the core
 
@@ -252,7 +292,7 @@ $kleeja_plugin['my_plugin']['install'] = function ($plg_id) {
 
 ## How to upgrade to Kleeja 4 safely
 
-We recommend that you upgrade from Kleeja 3 by hand, not with the update button in the control panel. The Kleeja 3 updater doesn't update the styles folder, so the Bootstrap style stays on its old version, and it doesn't check for the PHP version Kleeja 4 needs. Once you are on Kleeja 4, you can rely on the new updater for the releases that follow.
+You can upgrade from Kleeja 3 with the update button in the control panel. The updater copies the Kleeja 4 files, then Kleeja 4 updates the database, refreshes the Bootstrap style from the release package, switches your site from Default to `og_default` if it uses Default, and reopens the site. The one requirement the Kleeja 3 updater doesn't check is the PHP version, so check it yourself before you start.
 
 ::steps
 
@@ -262,32 +302,34 @@ Copy all of your site's files, and export the database from your hosting panel. 
 
 ### Check the server requirements
 
-Check in your hosting panel that PHP is version 8.2 or newer, and that the PDO and ZipArchive extensions are enabled. If they aren't, ask your hosting company to upgrade PHP before you do anything else.
+Check in your hosting panel that PHP is version 8.2 or newer, and that the PDO and ZipArchive extensions are enabled. If they aren't, ask your hosting company to upgrade PHP before you do anything else. If your site runs on SQLite, make sure the SQLite library is version 3.35 or newer (`phpinfo()` shows it under `pdo_sqlite`), because Kleeja 4 drops database columns and older versions can't.
 
 ### Review your plugins and styles
 
-Write down the plugins and the style your site uses, and look for each of them in the Kleeja 4 list. If your site depends on a plugin that has no Kleeja 4 version, postpone the upgrade. If you have a custom style built on Default, or you edited core files yourself, save your changes somewhere else.
+Write down the plugins and the style your site uses, and look for each of them in the "Plugins for Kleeja 4" section above. If your site depends on a plugin that has no Kleeja 4 version, postpone the upgrade. If you have a custom style built on Default, or you edited core files yourself, save your changes somewhere else.
 
 ### Try it on a test copy first
 
 Copy your site and its database to a subdomain or to your own computer, and run the upgrade there. Open the upload page, the download page and the control panel, and try uploading and downloading a file.
 
-### Upload the Kleeja 4 files
+### Update from the control panel
 
-Download Kleeja 4.0.0 from the [releases page on GitHub](https://github.com/kleeja/kleeja/releases), and upload its files over your site's files, including the `install` folder. The package doesn't contain `config.php`, so your database connection settings stay as they are, and it doesn't touch your visitors' files in the `uploads` folder.
+Open the "Check for updates" page of your Kleeja 3 control panel, and click "update now!". The updater downloads Kleeja 4, replaces the files and updates the database in three steps, and closes the site for maintenance while it works. Keep the page open until all three steps are done.
 
-### Update the database
+The database update drops the old columns, disables the plugins, switches your site from Default to `og_default` if it uses Default, and deletes the Masmak and `styles/default` folders.
 
-Open `/install/update.php` on your site, sign in with the admin username and password, and start the update. It drops the old columns, disables the plugins, switches your site from Default to `og_default` if it uses Default, and deletes the Masmak and `styles/default` folders.
+### Reload the control panel
 
-### Delete the install folder
-
-Your site shows visitors a message asking you to delete the `install` folder for as long as the folder exists, so delete it once the update is done. Then reload your site's pages with `Ctrl+F5`, because the CSS and JavaScript files have changed.
+When the update is done, reload the control panel with `Ctrl+F5`, because Damask replaced Masmak and the CSS and JavaScript files have changed. If the dashboard shows a "The database needs an update" notice, click "Update the database" in it, and Kleeja finishes what is left.
 
 ### Update and enable your plugins and styles
 
 Open the "Plugins" page in the control panel, update each plugin, then enable them one at a time and open your site after each one. If something breaks, you will know which plugin caused it. Then open the "Styles" page and update your style.
 
+::
+
+::note
+**Upgrading by hand:** if your server doesn't have ZipArchive, or the updater can't write to your site's files, download Kleeja 4.0.0 from the [releases page on GitHub](https://github.com/kleeja/kleeja/releases) and upload its files over your site's files, including the `install` folder. Then open `/install/update.php`, sign in with the admin username and password, and delete the `install` folder once the update is done. The package doesn't contain `config.php`, so your database connection settings stay as they are.
 ::
 
 ::caution
