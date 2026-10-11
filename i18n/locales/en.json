@@ -4,7 +4,9 @@
     "contributors": "Contributors",
     "store": "Store",
     "blog": "Blog",
-    "branding": "Branding"
+    "branding": "Branding",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu"
   },
   "contributors": {
     "seo": {
