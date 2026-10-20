@@ -8,6 +8,10 @@ author:
 image: /images/blog/kleeja-4.png
 ---
 
+::warning
+This post covers an upcoming release. Kleeja 4 will be released on 30 October 2026.
+::
+
 Kleeja 4 is the biggest release we have shipped in years. We rebuilt the control panel from scratch, redesigned the Bootstrap style to make it the default, rewrote the template engine and the updater, and cleaned the database of columns Kleeja no longer reads.
 
 Some of these changes break compatibility with plugins and styles written for Kleeja 3. This post has four parts: what's new in Kleeja 4, the plugins available for it, what may break after you upgrade, and how to upgrade safely. If your site runs Kleeja 3, read the last two parts before you start.
@@ -22,6 +26,8 @@ Some of these changes break compatibility with plugins and styles written for Kl
 
 Damask replaces Masmak, the control panel theme that has served Kleeja for many years. It is built on Bootstrap 5.3 and Font Awesome 7 without jQuery, works in both Arabic and English in either direction, and adapts to phone screens.
 
+![The Damask control panel dashboard](/images/docs/en/dashboard_1.png)
+
 Here is what you will find in it:
 
 - A light mode, a dark mode and an automatic mode that follows your device setting.
@@ -30,11 +36,15 @@ Here is what you will find in it:
 - A "Kleeja blog" tab on the dashboard that shows the latest posts from this blog in your panel's language.
 - A redesigned "Kleeja development team" page that shows the contributors and the project's activity on GitHub in charts.
 
+![The Damask dashboard in dark mode](/images/blog/kleeja-4/en/dashboard-dark.png)
+
 ### A Help page inside the control panel
 
 A new "Help" page sits at the end of the side menu. It has a guide for every control panel page that explains what the page does and how to use it, with tips, warnings and frequently asked questions. It also has general guides, including "First steps after installing", "A routine for running your service", "Keep your service safe" and "Troubleshooting".
 
 The help button in the top bar opens the guide of the page you are on. The search on the Help page ignores Arabic diacritics and the different forms of a letter, so "اضافه" finds "إضافة". Press `/` to jump to the search box.
+
+![The Help page, with the guides filtered by a search for "upload"](/images/blog/kleeja-4/en/help.png)
 
 Installed plugins appear on this page too, with their description and a link to their settings. Plugin developers can write a full guide for their plugin, and the developers section below shows how.
 
@@ -47,6 +57,8 @@ What your visitors notice:
 - Light, dark and automatic modes, which visitors pick from the top bar.
 - The upload form checks the file type and size before it sends the file, so visitors don't wait for an upload the server will reject.
 - Copy buttons next to file links after an upload.
+
+![Upload results in the dark mode of the Bootstrap style, with a copy button next to every link](/images/blog/kleeja-4/en/upload-result.png)
 
 The style no longer carries its own copies of Bootstrap and jQuery. It loads Bootstrap and Font Awesome from `includes/static_shared_files`, a folder it shares with the control panel.
 
@@ -68,13 +80,19 @@ An upgrade that fails halfway is worse than no upgrade, so we rewrote the update
 
 Kleeja 4 has its own list in the plugin and style store: the `kleeja-4-catalog.json` file in the [kleeja/store-catalog](https://github.com/kleeja/store-catalog) repository. The store now shows only the plugins and styles that are compatible with your Kleeja version, so you won't install a plugin only to find out it doesn't work.
 
+![The Kleeja Store tab on the Plugins page](/images/blog/kleeja-4/en/store.png)
+
 ### Redesigned emails
 
 Kleeja now sends its emails as HTML, with a plain text copy for mail apps that don't show HTML. We rewrote the password reset emails, the notifications for new reports and contact messages, and the admin replies to them. They are clearer now, and their buttons take the recipient to the right page.
 
+![The new password reset email](/images/blog/kleeja-4/en/email.png)
+
 ### A captcha with the Kleeja brand
 
 We redrew the captcha image with the Kleeja colors and logo. It is now as tall as a form field, and each character is drawn at its own angle.
+
+![The new captcha on the contact form](/images/blog/kleeja-4/en/captcha.png)
 
 ### A new template engine
 
@@ -122,13 +140,25 @@ Every official plugin has its own repository [on GitHub](https://github.com/klee
 ### Two new plugins
 
 - **Kleeja SMTP Mailer** (`kj_smtp_mailer`) 1.4 sends all of Kleeja's mail through your own SMTP server instead of the PHP mail function, so password recovery messages and your replies stay out of spam folders. It fills in the settings of Hostinger or Gmail in one click, and its test tab checks your settings, sends a test message and shows the reason when the server refuses it. It sends the messages in Kleeja's new email design, and sets the visitor's address as the reply address of message and report alerts.
+
+  ![The test tab of Kleeja SMTP Mailer after a successful test](/images/blog/kleeja-4/en/smtp-mailer-test.png)
+
 - **Kleeja Advanced Stats** (`kleeja_advanced_stats`) 1.3 reports what happened on your service between two dates: uploads, storage, downloads, messages, reports and new users, compared with the period before, with charts. It shows the most downloaded, largest and most reported files, when people upload by hour and by day, and saves the report as a PDF in your browser. Other plugins can add their own stats in a tab of their own, as Kleeja Payment does.
 
 ### Plugins with new features
 
 - **PDF Viewer** (`pdf_viewer`) 2.0 has a new viewer built on Mozilla's PDF.js, replacing the old one. It has a toolbar to move through pages and zoom, full screen and a presentation mode, and visitors can select and copy the text. It opens large files fast because it reads the pages it shows first, and it follows the page language and dark mode.
+
+  ![The new PDF viewer on a file's download page](/images/blog/kleeja-4/en/pdf-viewer.png)
+
 - **Video & Audio Player** (`video_player`) 2.1 moves to the latest Video.js. It has playback speed, picture-in-picture and keyboard shortcuts, double tap on touch screens to skip back or ahead, and a compact bar for audio files. The video box takes the shape of the video, so a portrait phone video isn't drawn small.
+
+  ![The video player on a file's download page](/images/blog/kleeja-4/en/video-player.png)
+
 - **Kleeja Multi-FTP Uploading** (`kj_ftp`) 2.0 adds a "Connection test" tab that checks an FTP account from end to end: the host, the port, FTPS, the sign-in, the root folder, uploading and deleting a file, and the public link. It names the setting that is wrong. Each account supports FTPS and passive mode, and the video player and PDF viewer play files stored on FTP servers.
+
+  ![The Connection test tab after all checks passed](/images/blog/kleeja-4/en/ftp-connection-test.png)
+
 - **Kleeja Payment** (`kleeja_payment`) 2.0.4 shows the payment options as cards, sends clearer emails to buyers, adds its payment stats to Kleeja Advanced Stats, and supports the `og_default` style. The PayPal and Stripe libraries come inside the release package that the store installs.
 - **KJ Comment** (`kj_comment`) 1.1.4 deletes the comments of a file along with the file, whether you delete it from the control panel, its uploader deletes it, or it is removed by its deletion link or by the cleanup of old files.
 
@@ -321,6 +351,8 @@ The database update drops the old columns, disables the plugins, switches your s
 ### Reload the control panel
 
 When the update is done, reload the control panel with `Ctrl+F5`, because Damask replaced Masmak and the CSS and JavaScript files have changed. If the dashboard shows a "The database needs an update" notice, click "Update the database" in it, and Kleeja finishes what is left.
+
+![The "database needs an update" notice on the dashboard](/images/blog/kleeja-4/en/db-update-notice.png)
 
 ### Update and enable your plugins and styles
 
