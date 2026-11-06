@@ -4,7 +4,9 @@
     "contributors": "المساهمون",
     "store": "المتجر",
     "blog": "المدونة",
-    "branding": "الهوية البصرية"
+    "branding": "الهوية البصرية",
+    "openMenu": "فتح قائمة التنقل",
+    "closeMenu": "إغلاق قائمة التنقل"
   },
   "contributors": {
     "seo": {
